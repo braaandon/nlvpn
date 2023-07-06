@@ -10,6 +10,7 @@ pub enum LimitType {
     Data,
     Instance,
     Members,
+    Character
 }
 
 impl LimitType {
@@ -27,6 +28,10 @@ impl LimitType {
                 start: 27015,
                 end: 27200,
             },
+            LimitType::Character => Port {
+                start: 7500,
+                end: 7509,
+            }
         }
     }
 }

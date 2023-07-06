@@ -13,9 +13,9 @@ fn main() -> std::io::Result<()> {
         limit: LimitType::Data,
     };
 
-    let mut req_limit_instance = LimitReq {
+    let mut req_limit_character = LimitReq {
         state: false,
-        limit: LimitType::Instance,
+        limit: LimitType::Character,
     };
 
 
@@ -31,6 +31,7 @@ fn main() -> std::io::Result<()> {
         move || {
             req_limit_data.state = !req_limit_data.state;
             stream1.write(&*bincode::serialize(&req_limit_data).unwrap()).unwrap();
+            println!("3074 toggled")
         },
     ).unwrap();
 
@@ -42,8 +43,9 @@ fn main() -> std::io::Result<()> {
             modifiers: Modifiers::CONTROL,
         },
         move || {
-            req_limit_instance.state = !req_limit_instance.state;
-            stream2.write(&*bincode::serialize(&req_limit_instance).unwrap()).unwrap();
+            req_limit_character.state = !req_limit_character.state;
+            stream2.write(&*bincode::serialize(&req_limit_character).unwrap()).unwrap();
+            println!("7500 toggled")
         }
     ).unwrap();
 
