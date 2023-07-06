@@ -1,4 +1,4 @@
-use crate::limit::Port;
+use crate::limit::{LimitType, Port};
 
 pub fn create_qdisc() {
     std::process::Command::new("sudo")
@@ -14,11 +14,11 @@ pub fn create_qdisc() {
 pub fn add_filter(port: Port) {
     let command: String;
 
-    if port.start == port.end {
+    if port.start == LimitType::Character.to_port().start {
         command = format!(
-            "tc filter add dev wg0 protocol ip parent 1: prio {} basic match cmp(u16 at 0 layer transport eq {}) action police rate 1bps burst 1b",
+            "tc filter add dev wg0 protocol ip parent 1: prio {0} basic match cmp(u16 at 0 layer transport eq {0}) or (cmp(u16 at 0 layer transport gt {0}) and cmp(u16 at 0 layer transport lt {1})) or cmp(u16 at 0 layer transport eq {1}) action police rate 100bps burst 100b",
             port.start,
-            port.start
+            port.end
         );
     } else {
         command = format!(
